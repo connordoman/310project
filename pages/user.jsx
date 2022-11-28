@@ -8,45 +8,47 @@ import { useRouter } from "next/router";
 import Content from "/components/Content.jsx";
 import TextColumn from "/components/TextColumn.jsx";
 import Button from "/components/Button.jsx";
-import { useUser } from "../context/user-context";
+import { getCookie } from "cookies-next";
 
-export const UserPage = () => {
-    const [profile, setProfile] = useState(null);
-    const router = useRouter();
-
-    useEffect(() => {
-        fetchProfile();
-    });
-
-    const fetchProfile = async () => {
-        const profileData = await supabase.auth.getUser();
-        if (profileData) {
-            setProfile(profileData);
-        } else {
-            router.push("/login");
-        }
-    };
-
-    const signOut = async () => {
-        await supabase.auth.signOut();
-        router.push("/login");
-    };
-
+export const UserPage = ({ user }) => {
     return (
         <Content title="User">
             <TextColumn>
-                {!profile ? (
-                    <h1>Not Logged In</h1>
-                ) : (
-                    <div>
-                        <h1>{profile.email}</h1>
-                        <h2>ID: {profile.id}</h2>
-                        <Button onClick={signOut}>Sign Out</Button>
-                    </div>
-                )}
+                <p>This an example of a protected page.</p>
+                <p>{user.id}</p>
             </TextColumn>
         </Content>
     );
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+    const refreshToken = getCookie("my-refresh-token", { req, res });
+    const accessToken = getCookie("my-access-token", { req, res });
+
+    if (refreshToken && accessToken) {
+        await supabase.auth.setSession({
+            refresh_token: refreshToken,
+            access_token: accessToken,
+        });
+    }
+
+    // returns user information
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+        return {
+            props: {},
+            redirect: {
+                destination: "/login",
+                permanent: false,
+            },
+        };
+    }
+    return {
+        props: { user },
+    };
 };
 
 export default UserPage;

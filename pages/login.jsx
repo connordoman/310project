@@ -6,20 +6,20 @@ import { useEffect, useState } from "react";
 import { supabase } from "/utils/supabase.js";
 import Content from "/components/Content.jsx";
 import TextColumn from "/components/TextColumn.jsx";
-import { useUser } from "../context/user-context";
 import TextBox from "/components/TextBox.jsx";
 import { Button } from "/components/Button.jsx";
 
 export const Login = () => {
-    const { login } = useUser();
     const [email, setEmail] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const signIn = async () => {
         if (!email) return;
+        setLoading(true);
 
-        const { error, data } = await supabase.auth.signIn({
-            provider: "github",
+        const { error } = await supabase.auth.signInWithOtp({
+            email,
         });
 
         if (error) {
@@ -37,17 +37,21 @@ export const Login = () => {
                 ) : (
                     <div>
                         <TextBox
-                            placeHolder="Email"
+                            placeholder="Email"
                             onChange={(v) => {
                                 setEmail(v);
                             }}
                         />
-                        <Button onClick={signIn}>Sign In</Button>
+                        <Button onClick={() => signIn()} disabled={loading}>
+                            {loading ? "Loading..." : "Sign In"}
+                        </Button>
                     </div>
                 )}
             </TextColumn>
         </Content>
     );
 };
+
+export const getServerSideProps = async ({ req, res }) => {};
 
 export default Login;

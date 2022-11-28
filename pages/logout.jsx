@@ -7,13 +7,10 @@ import { supabase } from "/utils/supabase.js";
 import { useRouter } from "next/router";
 import Content from "/components/Content.jsx";
 import TextColumn from "/components/TextColumn.jsx";
-import { useUser } from "../context/user-context";
 
 const Logout = () => {
-    const { logout } = useUser();
-
     useEffect(() => {
-        logout();
+        supabase.auth.signOut();
     }, []);
 
     return (
