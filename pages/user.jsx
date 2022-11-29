@@ -3,41 +3,28 @@
  * Copyright (c) 2022 Connor Doman
  */
 import { useEffect, useState } from "react";
-import { supabase } from "/utils/supabase.js";
+import { supabase, setSessionTokens } from "/utils/supabase.js";
 import { useRouter } from "next/router";
 import Content from "/components/Content.jsx";
 import TextColumn from "/components/TextColumn.jsx";
 import Button from "/components/Button.jsx";
 import { getCookie } from "cookies-next";
 
-export const UserPage = ({ user }) => {
+export const UserPage = ({ profile }) => {
     return (
-        <Content title="User">
+        <Content title={`${profile.firstName} ${profile.lastName}'s Profile`}>
             <TextColumn>
                 <p>This an example of a protected page.</p>
-                <p>{user.id}</p>
+                <p>{profile.id}</p>
             </TextColumn>
         </Content>
     );
 };
 
 export const getServerSideProps = async ({ req, res }) => {
-    const refreshToken = getCookie("my-refresh-token", { req, res });
-    const accessToken = getCookie("my-access-token", { req, res });
+    let loggedIn = await setSessionTokens(req, res);
 
-    if (refreshToken && accessToken) {
-        await supabase.auth.setSession({
-            refresh_token: refreshToken,
-            access_token: accessToken,
-        });
-    }
-
-    // returns user information
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!loggedIn) {
         return {
             props: {},
             redirect: {
@@ -46,8 +33,18 @@ export const getServerSideProps = async ({ req, res }) => {
             },
         };
     }
+
+    // returns user information
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    const { error, data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+
+    console.log(`Profile: ${JSON.stringify(profile)}`);
+
     return {
-        props: { user },
+        props: { profile },
     };
 };
 

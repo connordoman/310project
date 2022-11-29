@@ -3,7 +3,7 @@
  * Copyright (c) 2022 Connor Doman
  */
 import { useEffect, useState } from "react";
-import { supabase } from "/utils/supabase.js";
+import { supabase, setSessionTokens } from "/utils/supabase.js";
 import Content from "/components/Content.jsx";
 import TextColumn from "/components/TextColumn.jsx";
 import TextBox from "/components/TextBox.jsx";
@@ -52,6 +52,22 @@ export const Login = () => {
     );
 };
 
-export const getServerSideProps = async ({ req, res }) => {};
+export const getServerSideProps = async ({ req, res }) => {
+    let loggedIn = await setSessionTokens(req, res);
+
+    if (loggedIn) {
+        return {
+            props: {},
+            redirect: {
+                destination: "/",
+                permanent: false,
+            },
+        };
+    }
+
+    return {
+        props: {},
+    };
+};
 
 export default Login;
