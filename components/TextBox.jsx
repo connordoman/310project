@@ -3,7 +3,7 @@
  * Copyright (c) 2022 Connor Doman
  */
 import { useState, useEffect, Children } from "react";
-import styles from "/styles/TextBox.module.css";
+import styles from "/public/styles/TextBox.module.css";
 
 export const TextBox = ({
     children,
@@ -14,7 +14,7 @@ export const TextBox = ({
     h = "2em",
     w = "auto",
     m = "0.25em",
-    p = "0.5em",
+    p = "0 0.5em",
     title = "",
     style = {},
     onChange = (e) => {},

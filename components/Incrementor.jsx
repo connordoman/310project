@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Button, ButtonDecr, ButtonIncr } from "/components/Button.jsx";
-import styles from "/styles/Incrementor.module.css";
+import styles from "/public/styles/Incrementor.module.css";
 
 export const Incrementor = ({
     id,

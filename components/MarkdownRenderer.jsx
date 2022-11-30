@@ -4,7 +4,7 @@
  */
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
-import styles from "/styles/MarkdownRenderer.module.css";
+import styles from "/public/styles/MarkdownRenderer.module.css";
 
 export const MarkdownRenderer = ({ file }) => {
     const [markdown, setMarkdown] = useState("");

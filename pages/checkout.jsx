@@ -4,14 +4,14 @@
  */
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { supabase } from "/utils/supabase.js";
+import { supabase } from "/public/utils/supabase.js";
 import Content from "/components/Content.jsx";
 import TextColumn from "/components/TextColumn.jsx";
 import Incrementor from "/components/Incrementor.jsx";
 import CheckoutTable from "/components/CheckoutTable.jsx";
-import { TEST_ITEMS } from "/utils/test_order_items.js";
+import { TEST_ITEMS } from "/public/utils/test_order_items.js";
 
-export const Checkout = () => {
+export const Checkout = ({ user }) => {
     const router = useRouter();
     console.log("query data: ", router.query.data);
     console.log(`URL data is ${router.query.data}`);
@@ -26,7 +26,7 @@ export const Checkout = () => {
     }, [cartData]);
 
     return (
-        <Content title="Checkout">
+        <Content title="Checkout" user={user}>
             <TextColumn>
                 {/* <p>{JSON.stringify(cartData)}</p> */}
                 <CheckoutTable items={cartData} />

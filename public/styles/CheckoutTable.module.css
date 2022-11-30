@@ -25,11 +25,6 @@
     justify-content: center;
 }
 
-.input {
-    padding: 0.5em;
-    border: 1px solid grey;
-}
-
 .itemName {
     text-align: left;
     width: 70%;

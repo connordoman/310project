@@ -1,5 +1,5 @@
 import OrderPanel from "/components/OrderPanel";
-import { TEST_ITEMS } from "/utils/test_order_items.js";
+import { TEST_ITEMS } from "/public/utils/test_order_items.js";
 
 describe("OrderPanel.cy.js", () => {
     it("mounts", () => {

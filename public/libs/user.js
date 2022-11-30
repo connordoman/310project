@@ -4,7 +4,7 @@
  */
 
 import Cart from "./cart.js";
-import Generator from "/utils/generators.js";
+import Generator from "/public/utils/generators.js";
 
 export class User {
     constructor(id, first, last, email, permission = 0, cart = new Cart()) {

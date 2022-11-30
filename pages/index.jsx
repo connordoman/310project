@@ -13,13 +13,11 @@ import MarkdownRenderer from "/components/MarkdownRenderer.jsx";
  * Page content and app entry point
  */
 
-export const App = () => {
-    useEffect(() => {}, []);
-
+export const App = ({ user }) => {
     return (
-        <Content title="Home">
-            <MarkdownRenderer file="/content/homepage.md" />
-        </Content>
+        // <Content title="Home" user={user}>
+        <MarkdownRenderer file="/content/individualproject.md" />
+        // </Content>
     );
 };
 

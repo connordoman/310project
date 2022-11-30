@@ -7,7 +7,7 @@ import { useState, useEffect, useRef, StrictMode } from "react";
 import Incrementor from "/components/Incrementor.jsx";
 import CartBanner from "/components/Cart.jsx";
 import OrderItem from "/public/libs/order_item.js";
-import styles from "/styles/OrderPanel.module.css";
+import styles from "/public/styles/OrderPanel.module.css";
 import { Button } from "/components/Button.jsx";
 import {
     FaFirstAid,
@@ -69,10 +69,7 @@ export const OrderListItem = ({ item, onChange, update = false }) => {
     const [price, setPrice] = useState(0);
     const [count, setCount] = useState(0);
 
-    const it =
-        item instanceof OrderItem
-            ? item
-            : new OrderItem(item.id, item.name, item.price);
+    const it = item instanceof OrderItem ? item : new OrderItem(item.id, item.name, item.price);
 
     const handleChange = (qty) => {
         // console.log(`OrderListItem ${id}: ${count}`);
@@ -95,9 +92,7 @@ export const OrderListItem = ({ item, onChange, update = false }) => {
                 {it.priceString}
             </span>
             <Incrementor id={it.id} onChange={handleChange} min={0} />
-            <span className={styles.itemTotal}>
-                {OrderItem.priceFormatter.format(price)}
-            </span>
+            <span className={styles.itemTotal}>{OrderItem.priceFormatter.format(price)}</span>
             <Button
                 name="add"
                 onClick={handleClick}
@@ -146,14 +141,7 @@ export const OrderPanel = ({ orderCallback, testOrderItems }) => {
     const items = orderableItems?.map((item) => {
         let i = new OrderItem(item.id, item.name, item.price);
         const qty = cartItems[i.id] ? cartItems[i.id][1] : 0;
-        return (
-            <OrderListItem
-                key={i.id}
-                item={i}
-                onChange={updateItems}
-                update={qty > 0}
-            />
-        );
+        return <OrderListItem key={i.id} item={i} onChange={updateItems} update={qty > 0} />;
     });
 
     const handleClear = () => {

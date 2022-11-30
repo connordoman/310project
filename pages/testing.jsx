@@ -5,9 +5,9 @@
 import Content from "/components/Content.jsx";
 import MarkdownRenderer from "/components/MarkdownRenderer.jsx";
 
-const Testing = () => {
+const Testing = ({ user }) => {
     return (
-        <Content title="Testing">
+        <Content title="Testing" user={user}>
             <MarkdownRenderer file="/content/testing.md" />
         </Content>
     );

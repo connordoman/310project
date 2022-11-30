@@ -5,9 +5,9 @@
 import MarkdownRenderer from "/components/MarkdownRenderer.jsx";
 import Content from "/components/Content.jsx";
 
-export const OpenSourceInfo = () => {
+export const OpenSourceInfo = ({ user }) => {
     return (
-        <Content title="Open Source Information">
+        <Content title="Open Source Information" user={user}>
             <MarkdownRenderer file="/content/open-source.md" />
         </Content>
     );

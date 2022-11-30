@@ -7,8 +7,8 @@ import Link from "next/link";
 import Incrementor from "/components/Incrementor.jsx";
 import { ButtonGo } from "/components/Button.jsx";
 import OrderItem, { asPrice } from "/public/libs/order_item.js";
-import style from "/styles/CheckoutTable.module.css";
-import { TEST_ITEMS } from "/utils/test_order_items.js";
+import style from "/public/styles/CheckoutTable.module.css";
+import { TEST_ITEMS } from "/public/utils/test_order_items.js";
 
 export const CheckoutTable = ({ items }) => {
     console.log(items);
@@ -96,13 +96,7 @@ export const CheckoutTable = ({ items }) => {
                                 m="0 auto"
                                 title="Order Now"
                                 disabled={totalQty === 0 || isNaN(totalPrice)}
-                                onClick={() =>
-                                    alert(
-                                        `Ordered ${totalQty} items for ${asPrice(
-                                            totalPrice
-                                        )}`
-                                    )
-                                }
+                                onClick={() => alert(`Ordered ${totalQty} items for ${asPrice(totalPrice)}`)}
                             >
                                 Order ({totalQty})
                             </ButtonGo>

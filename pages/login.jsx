@@ -3,13 +3,13 @@
  * Copyright (c) 2022 Connor Doman
  */
 import { useEffect, useState } from "react";
-import { supabase, setSessionTokens } from "/utils/supabase.js";
+import { supabase, checkLoginStatus } from "/public/utils/supabase.js";
 import Content from "/components/Content.jsx";
 import TextColumn from "/components/TextColumn.jsx";
 import TextBox from "/components/TextBox.jsx";
 import { Button } from "/components/Button.jsx";
 
-export const Login = () => {
+export const Login = ({ user }) => {
     const [email, setEmail] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -30,12 +30,13 @@ export const Login = () => {
     };
 
     return (
-        <Content title="Login">
-            <TextColumn>
+        <Content title="Login" user={user}>
+            <TextColumn dir="column">
                 {submitted ? (
                     <p>Check your email for the link!</p>
                 ) : (
-                    <div>
+                    <>
+                        <h2>Please login</h2>
                         <TextBox
                             placeholder="Email"
                             onChange={(v) => {
@@ -45,7 +46,7 @@ export const Login = () => {
                         <Button onClick={() => signIn()} disabled={loading}>
                             {loading ? "Loading..." : "Sign In"}
                         </Button>
-                    </div>
+                    </>
                 )}
             </TextColumn>
         </Content>
@@ -53,7 +54,7 @@ export const Login = () => {
 };
 
 export const getServerSideProps = async ({ req, res }) => {
-    let loggedIn = await setSessionTokens(req, res);
+    let loggedIn = await checkLoginStatus(req, res);
 
     if (loggedIn) {
         return {

@@ -5,13 +5,14 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { getCookie } from "cookies-next";
+import User from "/public/libs/user.js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export const setSessionTokens = async (req, res) => {
+export const checkLoginStatus = async (req, res) => {
     const refreshToken = getCookie("my-refresh-token", { req, res });
     const accessToken = getCookie("my-access-token", { req, res });
 
@@ -24,5 +25,18 @@ export const setSessionTokens = async (req, res) => {
         return true;
     }
     console.log("User not logged in");
+    return false;
+};
+
+export const getUser = async (req, res) => {
+    const loggedIn = await checkLoginStatus(req, res);
+    if (loggedIn) {
+        const {
+            data: { user: authUser },
+        } = await supabase.auth.getUser();
+
+        const { data: user } = await supabase.from("user_staff").select("*").eq("id", authUser.id).single();
+        if (user) return user;
+    }
     return false;
 };

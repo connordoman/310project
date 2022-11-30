@@ -5,11 +5,11 @@
 
 import Content from "/components/Content.jsx";
 import OrderPanel from "/components/OrderPanel.jsx";
-import { TEST_ITEMS } from "/utils/test_order_items.js";
+import { TEST_ITEMS } from "/public/utils/test_order_items.js";
 
-const Order = () => {
+const Order = ({ user }) => {
     return (
-        <Content title="Order">
+        <Content title="Order" user={user}>
             <OrderPanel testOrderItems={TEST_ITEMS} />
         </Content>
     );

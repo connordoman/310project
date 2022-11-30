@@ -5,11 +5,11 @@
 
 import Content from "/components/Content.jsx";
 import ShipmentPanel from "/components/ShipmentPanel.jsx";
-import { TEST_ITEMS } from "/utils/test_shipments.js";
+import { TEST_ITEMS } from "/public/utils/test_shipments.js";
 
-const Shipments = () => {
+export const Shipments = ({ user }) => {
     return (
-        <Content title="Shipments">
+        <Content title="Shipments" user={user}>
             <ShipmentPanel testShipments={TEST_ITEMS} />
         </Content>
     );

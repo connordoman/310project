@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import styles from "/styles/ShipmentPanel.module.css";
+import styles from "/public/styles/ShipmentPanel.module.css";
 import SearchBar from "./SearchBar";
-import Generator from "/utils/generators.js";
+import Generator from "/public/utils/generators.js";
 import { Button } from "/components/Button";
 
 //Shipment class
@@ -195,39 +195,20 @@ const ShipmentPanel = ({ testShipments }) => {
     return (
         <div className={styles.container}>
             <div className={styles.searchBar}>
-                <SearchBar
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                />
+                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             </div>
             <div className={styles.sortButtons}>
-                <Button onClick={() => setSortType("shipment_id")}>
-                    Sort by ID
-                </Button>
-                <Button onClick={() => setSortType("date")}>
-                    Sort by Date
-                </Button>
-                <Button onClick={() => setSortType("status")}>
-                    Sort by Status
-                </Button>
-                <Button onClick={() => setSortType("price")}>
-                    Sort by Price
-                </Button>
-                <Button onClick={() => setSortType("priority")}>
-                    Sort by Priority
-                </Button>
+                <Button onClick={() => setSortType("shipment_id")}>Sort by ID</Button>
+                <Button onClick={() => setSortType("date")}>Sort by Date</Button>
+                <Button onClick={() => setSortType("status")}>Sort by Status</Button>
+                <Button onClick={() => setSortType("price")}>Sort by Price</Button>
+                <Button onClick={() => setSortType("priority")}>Sort by Priority</Button>
             </div>
             <div className={styles.sortDirection}>
-                <Button
-                    onClick={() => setSortDirection("ascending")}
-                    color={"#656565"}
-                >
+                <Button onClick={() => setSortDirection("ascending")} color={"#656565"}>
                     Ascending
                 </Button>
-                <Button
-                    onClick={() => setSortDirection("descending")}
-                    color={"#656565"}
-                >
+                <Button onClick={() => setSortDirection("descending")} color={"#656565"}>
                     Descending
                 </Button>
             </div>

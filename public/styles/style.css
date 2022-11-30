@@ -20,19 +20,23 @@ input[type="text"] {
     outline: none;
 }
 
-table tr:last-child td:first-child {
+table tr:last-child td:first-child,
+table tr:last-child th:first-child {
     border-bottom-left-radius: 0.25em;
 }
 
-table tr:last-child td:last-child {
+table tr:last-child td:last-child,
+table tr:last-child th:last-child {
     border-bottom-right-radius: 0.25em;
 }
 
-table thead tr th:first-child {
+table tr:first-child td:first-child,
+table tr:first-child th:first-child {
     border-top-left-radius: 0.25em;
 }
 
-table thead tr th:last-child {
+table tr:first-child td:last-child,
+table tr:first-child th:last-child {
     border-top-right-radius: 0.25em;
 }
 
@@ -46,8 +50,8 @@ table thead tr th:last-child {
     height: 100%;
 }
 
-.navHeader {
-    background-color: #0a2626;
+.header {
+    background-color: #260026;
     color: white;
     padding: 1rem 2rem;
     display: flex;
@@ -59,6 +63,20 @@ table thead tr th:last-child {
     position: sticky;
     z-index: 10;
     overflow-x: hidden;
+    box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.header a {
+    color: white;
+    text-decoration: none;
+    border-bottom: 0.05em solid transparent;
+    margin: 0.25em 1em;
+    padding-bottom: 0.25em;
+}
+
+.header a:hover {
+    cursor: pointer;
+    border-bottom: 0.05em solid white;
 }
 
 .navLinks {
@@ -68,19 +86,6 @@ table thead tr th:last-child {
     align-items: flex-end;
     flex-wrap: wrap;
     text-align: right;
-}
-
-.navLink {
-    margin: 0.25em 1em;
-    padding-bottom: 0.25em;
-    color: white;
-    text-decoration: none;
-    border-bottom: 0.05em solid transparent;
-}
-
-.navLink:hover {
-    cursor: pointer;
-    border-bottom: 0.05em solid white;
 }
 
 .footer {
@@ -114,6 +119,27 @@ table thead tr th:last-child {
 
 .textColumn {
     padding: 0 1rem;
+}
+
+.table {
+    border-spacing: 0;
+    max-width: 50%;
+    margin: 0 auto;
+}
+
+.table td,
+.table th {
+    border: 0.5px solid lightgrey;
+    padding: 0.5em 0.5em;
+}
+
+.table th {
+    background: #eee;
+    color: black;
+}
+
+.r-align {
+    text-align: right;
 }
 
 /*
@@ -178,7 +204,7 @@ table thead tr th:last-child {
 }
 
 .inputField {
-    padding: 0.5em;
+    padding: 0.25em 0.5em;
     border: 0.05em solid #3d3c3a;
     width: 32em;
     height: 2em;
@@ -190,12 +216,21 @@ table thead tr th:last-child {
     background-color: #f2f2f2;
 }
 
+.desc {
+    font-size: 10pt;
+    font-style: italic;
+}
+
+input:focus {
+    outline: none;
+}
+
 /*
      Mobile Styling
  */
 
 @media only screen and (max-width: 750px) {
-    .navHeader {
+    .header {
         padding: 0 1rem;
     }
 

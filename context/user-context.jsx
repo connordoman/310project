@@ -3,15 +3,14 @@
  * Copyright (c) 2022 Connor Doman
  */
 import { createContext, useState, useEffect, useContext } from "react";
-import { supabase } from "/utils/supabase.js";
+import { supabase } from "/public/utils/supabase.js";
 import { useRouter } from "next/router";
 
 const CONTEXT = createContext();
 
 const Provider = ({ children }) => {
     const router = useRouter();
-    const [authenticatedState, setAuthenticatedState] =
-        useState("unauthenticated");
+    const [authenticatedState, setAuthenticatedState] = useState("unauthenticated");
     // const [user, setSessionUser] = useState(supabase.auth.getUser());
     const [isLoading, setIsLoading] = useState(true);
 
@@ -45,18 +44,16 @@ const Provider = ({ children }) => {
         //     getUserProfile();
         // });
 
-        const { data: authListener } = supabase.auth.onAuthStateChange(
-            (event, session) => {
-                handleAuthChange(event, session);
-                if (event === "SIGNED_IN") {
-                    setAuthenticatedState("authenticated");
-                    router.push("/user");
-                }
-                if (event === "SIGNED_OUT") {
-                    setAuthenticatedState("unauthenticated");
-                }
+        const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+            handleAuthChange(event, session);
+            if (event === "SIGNED_IN") {
+                setAuthenticatedState("authenticated");
+                router.push("/user");
             }
-        );
+            if (event === "SIGNED_OUT") {
+                setAuthenticatedState("unauthenticated");
+            }
+        });
         checkUser();
         return () => {
             authListener.subscription.unsubscribe();

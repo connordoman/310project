@@ -1,17 +1,11 @@
 // inventory panel lists all the items in the inventory
 
 import React from "react";
-import styles from "/styles/InventoryPanel.module.css";
+import styles from "/public/styles/InventoryPanel.module.css";
 import { useState, useEffect, useRef } from "react";
 
 export class Warehouse {
-    constructor(
-        warehouse_id,
-        total_space,
-        remaining_space,
-        inventory = [],
-        changes = []
-    ) {
+    constructor(warehouse_id, total_space, remaining_space, inventory = [], changes = []) {
         this.warehouse_id = warehouse_id;
         this.total_space = total_space;
         this.remaining_space = remaining_space;
@@ -31,14 +25,12 @@ export class Warehouse {
     addItem(item_id, item_name, item_quantity) {
         this.inventory.push({ item_id, item_name, item_quantity });
         let status = "+" + item_quantity;
-        this.changes.push({status, item_id, item_name, item_quantity });
+        this.changes.push({ status, item_id, item_name, item_quantity });
     }
 
     // remove an item from the inventory
     removeItem(item_id, item_name, item_quantity) {
-        this.inventory = this.inventory.filter(
-            (item) => item.item_id !== item_id
-        );
+        this.inventory = this.inventory.filter((item) => item.item_id !== item_id);
         let status = "-" + item_quantity;
         this.changes.push({ status, item_id, item_name, item_quantity });
     }
@@ -50,9 +42,9 @@ export class Warehouse {
                 item.item_quantity = item_quantity;
             }
         });
-        if (item.item_quantity < item_quantity){
+        if (item.item_quantity < item_quantity) {
             let status = "+" + item_quantity;
-        } else{
+        } else {
             let status = "-" + item_quantity;
         }
         this.changes.push({ status, item_id, item_name, item_quantity });
@@ -86,9 +78,7 @@ export class Warehouse {
 }
 
 export function InventoryPanel({ inventoryItems }) {
-    const [selectedWarehouse, setSelectedWarehouse] = useState(
-        inventoryItems[0]
-    );
+    const [selectedWarehouse, setSelectedWarehouse] = useState(inventoryItems[0]);
     const [warehouseList, setWarehouseList] = useState(inventoryItems);
     const [itemList, setItemList] = useState([]);
     const [item, setItem] = useState("");
@@ -165,9 +155,7 @@ export function InventoryPanel({ inventoryItems }) {
             return;
         }
         // check if the item already exists in the warehouse
-        let item_exists = warehouse_inventory_object.find(
-            (item) => item.item_id === item_id
-        );
+        let item_exists = warehouse_inventory_object.find((item) => item.item_id === item_id);
         if (item_exists) {
             warehouse_inventory_object.forEach((item) => {
                 if (item.item_id === item_id) {
@@ -191,8 +179,7 @@ export function InventoryPanel({ inventoryItems }) {
         // add the item to the warehouse
         warehouse_inventory_object.push({ item_id, item_name, item_quantity });
         warehouse_object.inventory = warehouse_inventory_object;
-        warehouse_object.remaining_space =
-            warehouse_space_remaining - item_quantity;
+        warehouse_object.remaining_space = warehouse_space_remaining - item_quantity;
         warehouse_list[warehouse_id] = warehouse_object;
         setWarehouseList(warehouse_list);
         setWarehouseSpaceRemaining(warehouse_space_remaining - item_quantity);
@@ -222,9 +209,7 @@ export function InventoryPanel({ inventoryItems }) {
         }
 
         // check if the item exists in the warehouse
-        let item_exists = warehouse_inventory_object.find(
-            (item) => item.item_id === item_id
-        );
+        let item_exists = warehouse_inventory_object.find((item) => item.item_id === item_id);
         if (!item_exists) {
             alert("Item does not exist in warehouse");
             return;
@@ -246,9 +231,7 @@ export function InventoryPanel({ inventoryItems }) {
                 item.item_quantity -= item_quantity;
                 total_quantity = item.item_quantity;
                 if (item.item_quantity === 0) {
-                    warehouse_inventory_object.splice(
-                        warehouse_inventory_object.indexOf(item),
-                    );
+                    warehouse_inventory_object.splice(warehouse_inventory_object.indexOf(item));
                 }
             }
         });
@@ -313,8 +296,7 @@ export function InventoryPanel({ inventoryItems }) {
                     {itemList.map((item, index) => (
                         <li key={index}>
                             <p>
-                                Item ID: {item.item_id} Quantity:{" "}
-                                {item.item_quantity}
+                                Item ID: {item.item_id} Quantity: {item.item_quantity}
                             </p>
                         </li>
                     ))}
@@ -354,16 +336,13 @@ export function InventoryPanel({ inventoryItems }) {
             <div className={styles.inventory_panel__history}>
                 <h1>History</h1>
                 <ul>
-                    {warehouseList[warehouse].changes
-                        .reverse()
-                        .map((change, index) => (
-                            <li key={index}>
-                                <p>
-                                    {change.status} Item ID: {change.item_id} Quantity:{" "}
-                                    {change.total_quantity}
-                                </p>
-                            </li>
-                        ))}
+                    {warehouseList[warehouse].changes.reverse().map((change, index) => (
+                        <li key={index}>
+                            <p>
+                                {change.status} Item ID: {change.item_id} Quantity: {change.total_quantity}
+                            </p>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>

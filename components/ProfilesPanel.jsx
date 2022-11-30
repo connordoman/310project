@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import User from "/public/libs/user.js";
 import TextColumn from "/components/TextColumn";
-import styles from "/styles/ProfilesPanel.module.css";
+import styles from "/public/styles/ProfilesPanel.module.css";
 import TextBox from "/components/TextBox";
 
 import Incrementor from "/components/Incrementor.jsx";
@@ -23,28 +23,14 @@ export const ProfileCellIncrementor = ({ val, onChange, disabled }) => {
         onChange(value);
     };
 
-    const increment = () => {
-        setValue(value + 1);
-    };
-
-    const decrement = () => {
-        setValue(value - 1);
-    };
-
     return (
         <td className={styles.incrCell}>
-            <Incrementor
-                initialValue={val}
-                onChange={handleChange}
-                max={5}
-                min={0}
-                style={{ margin: 0 }}
-            />
+            <Incrementor initialValue={val} onChange={handleChange} max={5} min={1} style={{ margin: 0 }} />
         </td>
     );
 };
 
-export const ProfileInputCell = ({ val, onChange }) => {
+export const ProfileInputCell = ({ val, onChange, disabled }) => {
     const [currentValue, setCurrentValue] = useState(val);
 
     useEffect(() => {
@@ -59,6 +45,7 @@ export const ProfileInputCell = ({ val, onChange }) => {
                 onChange={(v) => {
                     setCurrentValue(v);
                 }}
+                disabled={disabled}
             />
         </td>
     );
@@ -70,6 +57,7 @@ export const ProfileTableRow = ({ profile }) => {
     const [lname, setLastName] = useState(profile.lastName);
     const [email, setEmail] = useState(profile.email);
     const [permission, setPermission] = useState(profile.permission);
+    const [userPermission, setUserPermission] = useState(profile.permission);
 
     return (
         <tr className={styles.profileRow}>
@@ -79,37 +67,34 @@ export const ProfileTableRow = ({ profile }) => {
             <ProfileInputCell
                 val={profile.firstName}
                 onChange={(v) => setFirstName(v)}
+                disabled={userPermission < permission}
             />
             <ProfileInputCell
                 val={profile.lastName}
                 onChange={(v) => setLastName(v)}
+                disabled={userPermission < permission}
             />
             <ProfileInputCell
                 val={profile.email}
                 onChange={(v) => setEmail(v)}
+                disabled={userPermission < permission}
             />
             <ProfileCellIncrementor
                 val={profile.permission}
                 onChange={(v) => setPermission(v)}
-                disabled={false}
+                disabled={userPermission < permission}
             />
         </tr>
     );
 };
 
-export const ProfileTable = ({ profiles }) => {
+export const ProfileTable = ({ user, profiles }) => {
     const profs = profiles.map((prof) => {
         let u = prof;
         if (!(prof instanceof User)) {
-            u = new User(
-                prof.id,
-                prof.firstName,
-                prof.lastName,
-                prof.email,
-                prof.permission
-            );
+            u = new User(prof.id, prof.firstName, prof.lastName, prof.email, prof.permission);
         }
-        return <ProfileTableRow key={u.id} profile={u} />;
+        return <ProfileTableRow key={u.id} user={user} profile={u} />;
     });
 
     return (
@@ -128,10 +113,13 @@ export const ProfileTable = ({ profiles }) => {
     );
 };
 
-export const ProfilePanel = ({ profiles }) => {
+export const ProfilePanel = ({ user, profiles }) => {
     return (
-        <TextColumn>
-            <ProfileTable profiles={profiles} />
+        <TextColumn dir="col">
+            <>
+                <h2>List of Staff Profiles</h2>
+                <ProfileTable user={user} profiles={profiles} />
+            </>
         </TextColumn>
     );
 };

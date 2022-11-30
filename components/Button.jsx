@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react";
 import { FaPlus, FaMinus, FaTimes, FaShoppingCart } from "react-icons/fa";
 import Link from "next/link";
-import styles from "/styles/Button.module.css";
+import styles from "/public/styles/Button.module.css";
 
 export const UIButton = ({
     children,
@@ -16,7 +16,7 @@ export const UIButton = ({
     h = "2em",
     w = "auto",
     m = "0.25em",
-    p = "0.5em",
+    p = "0 0.5em",
     title = "",
     style = {},
     ...props
@@ -41,6 +41,7 @@ export const UIButton = ({
                 padding: p,
             }}
             title={title}
+            {...props}
         >
             {children}
         </button>
@@ -65,14 +66,7 @@ export const ButtonGo = (props) => {
 
 export const ButtonDelete = (props) => {
     return (
-        <Button
-            name="buttonDelete"
-            color="#ed0000"
-            h="2.75em"
-            w="2.75em"
-            m="0.5em"
-            {...props}
-        >
+        <Button name="buttonDelete" color="#ed0000" h="2.75em" w="2.75em" m="0.5em" {...props}>
             <FaTimes />
         </Button>
     );
@@ -113,12 +107,7 @@ export const ButtonCart = ({ amt, onClick = () => {}, ...props }) => {
     );
 };
 
-export const ButtonIncr = ({
-    onClick = () => {},
-    noIncr = false,
-    incr = () => {},
-    ...props
-}) => {
+export const ButtonIncr = ({ onClick = () => {}, noIncr = false, incr = () => {}, ...props }) => {
     return (
         <UIButton
             name="buttonIncrement"
@@ -136,12 +125,7 @@ export const ButtonIncr = ({
     );
 };
 
-export const ButtonDecr = ({
-    onClick = () => {},
-    noDecr = false,
-    decr = () => {},
-    ...props
-}) => {
+export const ButtonDecr = ({ onClick = () => {}, noDecr = false, decr = () => {}, ...props }) => {
     return (
         <UIButton
             name="buttonDecrement"
