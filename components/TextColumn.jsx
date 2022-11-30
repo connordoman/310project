@@ -5,17 +5,10 @@
 import { useState, useEffect, cloneElement } from "react";
 import { FlexCol, FlexRow } from "/components/Flex.jsx";
 
-export const TextColumn = ({ text, children, dir = "row", tAlign = "l", ...props }) => {
+export const TextColumn = ({ text, children, tAlign = "l", ...props }) => {
     const [textAlign, setTextAlign] = useState("left");
     const [flexRow, setFlexRow] = useState(false);
-
-    useEffect(() => {
-        if (dir.toUpperCase() === "ROW") {
-            setFlexRow(true);
-        } else {
-            setFlexRow(false);
-        }
-    }, [dir]);
+    const [style, setStyle] = useState(props.style);
 
     useEffect(() => {
         let c = tAlign[0].toUpperCase();
@@ -25,18 +18,26 @@ export const TextColumn = ({ text, children, dir = "row", tAlign = "l", ...props
         else setTextAlign("left");
     }, [tAlign]);
 
+    useEffect(() => {
+        setStyle({
+            textAlign: textAlign,
+            minWidth: "50%",
+            maxWidth: "95%",
+            margin: "0 auto",
+            ...props.style,
+        });
+    }, [textAlign, props.style]);
+
     const content = (
         <>
-            <p>{text}</p>
+            {text ? <p>{text}</p> : <></>}
             {cloneElement(children, { props })}
         </>
     );
 
-    return (
-        <div className="textColumn" style={{ textAlign }}>
-            {flexRow ? <FlexRow>{content}</FlexRow> : <FlexCol>{content}</FlexCol>}
-        </div>
-    );
+    const flex = <FlexCol style={{ textAlign, ...style }}>{content}</FlexCol>;
+
+    return flex;
 };
 
 export default TextColumn;

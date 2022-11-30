@@ -6,6 +6,7 @@
 export const FlexRow = ({ children, style }) => {
     return (
         <div
+            class="flex-row"
             style={{
                 display: "flex",
                 flexDirection: "row",
@@ -22,10 +23,11 @@ export const FlexRow = ({ children, style }) => {
 export const FlexCol = ({ children, style }) => {
     return (
         <div
+            class="flex-col"
             style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "flex-start",
+                justifyContent: "center",
                 alignItems: "center",
                 ...style,
             }}

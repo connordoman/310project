@@ -1,7 +1,7 @@
-.inventoryPanel {
-    
+.inventory_panel {
+    width: 100%;
 }
-.warehouseDropdown{
+.warehouseDropdown {
     height: 100%;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -13,39 +13,38 @@
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.inventory_panel__warehouse{
+.inventory_panel__warehouse {
     margin: 10px;
-    border-radius:4px;
+    border-radius: 4px;
     background: #f0f0f0;
     padding: 1rem;
 }
-.inventory_list{
+.inventory_list {
     display: flex;
     flex-direction: column;
     width: 50%;
     height: auto;
     text-align: left;
     margin: 10px;
-    border-radius:4px;
+    border-radius: 4px;
     background: #f0f0f0;
     float: inline;
     padding: 1rem;
 }
 
-.inventory_panel__inventory{
+.inventory_panel__inventory {
     margin: 10px;
-    border-radius:4px;
+    border-radius: 4px;
     background: #f0f0f0;
     padding: 1rem;
 }
-.inventory_panel__add_remove{
+.inventory_panel__add_remove {
     margin: 10px;
-    border-radius:4px;
+    border-radius: 4px;
     background: #f0f0f0;
     padding: 1rem;
 }
-.inventory_panel__add_remove input{
-    
+.inventory_panel__add_remove input {
     height: 100%;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -56,9 +55,9 @@
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.inventory_panel__history{
+.inventory_panel__history {
     margin: 10px;
-    border-radius:4px;
+    border-radius: 4px;
     background: #f0f0f0;
     padding: 1rem;
 }

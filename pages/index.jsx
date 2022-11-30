@@ -15,9 +15,9 @@ import MarkdownRenderer from "/components/MarkdownRenderer.jsx";
 
 export const App = ({ user }) => {
     return (
-        // <Content title="Home" user={user}>
-        <MarkdownRenderer file="/content/individualproject.md" />
-        // </Content>
+        <Content title="Home" user={user}>
+            <MarkdownRenderer file="/content/individualproject.md" />
+        </Content>
     );
 };
 

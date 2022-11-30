@@ -3,35 +3,68 @@
  * Copyright (c) 2022 Connor Doman
  */
 
-import { supabase, checkLoginStatus } from "/public/utils/supabase.js";
+import { supabase, checkLoginStatus, getUser } from "/public/utils/supabase.js";
 
 export const signUserUp = async (req, res) => {
     console.log("Signup function entered...");
     // check if logged in
-    const loggedIn = await checkLoginStatus(req, res);
-    console.log("Checking logged in...");
-
-    if (loggedIn) {
-        console.log("User already logged in");
-        return false;
-    }
 
     try {
         const { username, email, password, firstName, lastName, phone } = req.body;
 
-        const { user, session, error } = await supabase.auth.signUp({
-            email,
-            password,
-        });
+        // let user = await getUser(req, res);
+        console.log("Checking logged in...");
+        let { data: user } = await supabase.from("user_staff").select("*").eq("username", username).single();
 
-        if (error) {
+        console.log(`Found user: ${user}`);
+
+        if (user && (user.username === username || user.email === email)) {
+            console.log("User already signed up");
+            res.redirect("/");
             return false;
         }
 
-        await supabase.from("staff").insert([{ id: user.id, username, email, firstName, lastName, phone }]);
+        // Sign user up if they dont exist
+        if (!user) {
+            const {
+                data: { user: authUser },
+                error,
+            } = await supabase.auth.signUp({
+                email,
+                phone,
+                password,
+            });
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            user = authUser;
+            console.log(`User created: ${JSON.stringify(authUser, null, 4)}`);
+        }
+
+        // user = await getUser(req, res);
+
+        // Create user to insert in staff
+        const newUserStaff = {
+            id: user.id,
+            created_at: user.created_at,
+            username,
+            firstName,
+            lastName,
+            permission: 5,
+        };
+
+        console.log(`New user: ${JSON.stringify(newUserStaff, null, 4)}`);
+
+        // Insert into staff database
+        const { error: insertErr } = await supabase.from("staff").insert(newUserStaff, { returning: "minimal" });
+
+        if (insertErr) {
+            throw new Error(insertErr.message);
+        }
         console.log("Signup function passed...");
     } catch (err) {
-        console.log(`Error signing up user: ${err}`);
         throw err;
     }
     return true;
@@ -46,16 +79,20 @@ export const handler = async (req, res) => {
                 console.log("Signup function returned...");
                 if (signedUp) {
                     console.log("Signed up");
-                    res.status(200).json({ message: "Signed up successfully" });
+                    res.status(200);
                     res.redirect("/user");
                 } else {
                     console.log("Failed to sign up");
-                    res.status(401).json({ message: "Error signing up" });
+                    res.status(401);
+                    res.redirect("/signup");
                 }
-                res.status(200).send();
+                // res.status(200);
+                // res.end();
             })
-            .catch(() => {
-                res.status(500).send();
+            .catch((error) => {
+                console.error(`Error signing up user: ${error}`);
+                // res.status(500).write("Error signing up user");
+                res.redirect(`/signup?e=${encodeURIComponent(error)}`);
             });
     }
 };

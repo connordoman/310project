@@ -9,6 +9,7 @@ import { isMobile } from "react-device-detect";
 import Head from "next/head";
 import Footer from "./Footer";
 import Header from "./Header";
+import TextColumn from "./TextColumn";
 
 export const Content = ({ user, title, pageTitle, children, ...props }) => {
     useEffect(() => {
@@ -17,7 +18,7 @@ export const Content = ({ user, title, pageTitle, children, ...props }) => {
     return (
         <div className="content">
             <Header user={user} title={pageTitle ? pageTitle : " " + title} />
-            {cloneElement(children, { ...props })}
+            <TextColumn dir="col">{cloneElement(children, { ...props })}</TextColumn>
             <Footer />
         </div>
     );

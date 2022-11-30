@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { supabase, getUser } from "/public/utils/supabase.js";
 import { useRouter } from "next/router";
 import Content from "/components/Content.jsx";
+import ProtectedContent from "../components/ProtectedContent";
 import TextColumn from "/components/TextColumn.jsx";
 import UserTable from "/components/UserTable.jsx";
 import { Button } from "/components/Button.jsx";
@@ -13,14 +14,12 @@ import { getCookie } from "cookies-next";
 
 export const UserPage = ({ user, profile }) => {
     return (
-        <Content title={`Staff Profile`} user={user}>
-            <TextColumn dir="col">
-                <>
-                    <h2>User Information</h2>
-                    <UserTable user={profile} />
-                </>
-            </TextColumn>
-        </Content>
+        <ProtectedContent title={`Staff Profile`} user={user}>
+            <>
+                <h2>User Information</h2>
+                <UserTable user={profile} />
+            </>
+        </ProtectedContent>
     );
 };
 
