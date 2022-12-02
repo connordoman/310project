@@ -35,9 +35,7 @@ export const TextColumn = ({ text, children, tAlign = "l", ...props }) => {
         </>
     );
 
-    const flex = <FlexCol style={{ textAlign, ...style }}>{content}</FlexCol>;
-
-    return flex;
+    return <FlexCol style={{ textAlign, ...style }}>{content}</FlexCol>;
 };
 
 export default TextColumn;

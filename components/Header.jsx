@@ -10,7 +10,7 @@ import { supabase } from "/public/utils/supabase.js";
 import { useEffect, useState } from "react";
 import { FlexRow } from "./Flex";
 
-export const LINK_LIST = ["Order", "Shipments", "Warehouse", "Profiles", "User", "SignUp"];
+export const LINK_LIST = ["Order", "Shipments", "Warehouse", "Profiles", "User"];
 
 export const Header = ({ user, title }) => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -47,6 +47,7 @@ export const Header = ({ user, title }) => {
                     </>
                 ) : (
                     <>
+                        <Link href="/signup">Sign Up</Link>
                         <Link href="/login">Login</Link>
                     </>
                 )}

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { getUser } from "/public/utils/supabase.js";
 import Content from "/components/Content.jsx";
 
-export default function Document({ user }) {
+export default function Document() {
     return (
         <Html lang="en">
             <Head>
@@ -15,22 +15,8 @@ export default function Document({ user }) {
             </Head>
             <body>
                 <Main />
-                <NextScript user={user} />
+                <NextScript />
             </body>
         </Html>
     );
 }
-
-export const getServerSideProps = async (context) => {
-    const user = await getUser(context.req, context.res);
-
-    if (user) {
-        return {
-            props: { user },
-        };
-    } else {
-        return {
-            props: {},
-        };
-    }
-};

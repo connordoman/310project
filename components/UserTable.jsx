@@ -55,7 +55,7 @@ export const UserTable = ({ user }) => {
     );
 
     return (
-        <table className="table">
+        <table className="table" style={{ width: "100%", margin: "0" }}>
             <tbody>{customRows}</tbody>
         </table>
     );

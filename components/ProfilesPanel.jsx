@@ -53,9 +53,10 @@ export const ProfileInputCell = ({ val, onChange, disabled }) => {
 
 export const ProfileTableRow = ({ profile }) => {
     const [uid, setUid] = useState(profile.id);
-    const [fname, setFirstName] = useState(profile.firstNname);
+    const [fname, setFirstName] = useState(profile.firstName);
     const [lname, setLastName] = useState(profile.lastName);
     const [email, setEmail] = useState(profile.email);
+    const [username, setUsername] = useState(profile.username);
     const [permission, setPermission] = useState(profile.permission);
     const [userPermission, setUserPermission] = useState(profile.permission);
 
@@ -64,23 +65,12 @@ export const ProfileTableRow = ({ profile }) => {
             <td className={styles.idCell} title={uid}>
                 <Link href={"/" + uid}>{uid.slice(0, 5)}</Link>
             </td>
-            <ProfileInputCell
-                val={profile.firstName}
-                onChange={(v) => setFirstName(v)}
-                disabled={userPermission < permission}
-            />
-            <ProfileInputCell
-                val={profile.lastName}
-                onChange={(v) => setLastName(v)}
-                disabled={userPermission < permission}
-            />
-            <ProfileInputCell
-                val={profile.email}
-                onChange={(v) => setEmail(v)}
-                disabled={userPermission < permission}
-            />
+            <ProfileInputCell val={fname} onChange={(v) => setFirstName(v)} disabled={userPermission < permission} />
+            <ProfileInputCell val={lname} onChange={(v) => setLastName(v)} disabled={userPermission < permission} />
+            <ProfileInputCell val={email} onChange={(v) => setEmail(v)} disabled={userPermission < permission} />
+            <ProfileInputCell val={username} onChange={(v) => setUsername(v)} disabled={userPermission < permission} />
             <ProfileCellIncrementor
-                val={profile.permission}
+                val={permission}
                 onChange={(v) => setPermission(v)}
                 disabled={userPermission < permission}
             />
@@ -91,9 +81,11 @@ export const ProfileTableRow = ({ profile }) => {
 export const ProfileTable = ({ user, profiles }) => {
     const profs = profiles.map((prof) => {
         let u = prof;
+        console.log(u);
         if (!(prof instanceof User)) {
             u = new User(prof.id, prof.firstName, prof.lastName, prof.email, prof.permission);
         }
+        u.username = prof.username;
         return <ProfileTableRow key={u.id} user={user} profile={u} />;
     });
 
@@ -105,6 +97,7 @@ export const ProfileTable = ({ user, profiles }) => {
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
+                    <th>Username</th>
                     <th>Permission</th>
                 </tr>
             </thead>

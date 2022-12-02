@@ -4,10 +4,9 @@
  */
 
 import { useState, useEffect } from "react";
-import { supabase, getUser } from "/public/utils/supabase.js";
-import Content from "/components/Content";
-import TextColumn from "/components/TextColumn";
 import ProfilesPanel from "/components/ProfilesPanel";
+import { getUser, getUserProfileOrRedirect, supabase } from "../public/utils/supabase";
+import ProtectedContent from "../components/ProtectedContent";
 
 export const Profiles = ({ user, profiles }) => {
     const [mounted, setMounted] = useState(false);
@@ -23,40 +22,38 @@ export const Profiles = ({ user, profiles }) => {
     }, [profiles]);
 
     return (
-        <Content title="Profiles" user={user}>
+        <ProtectedContent title="Profiles" user={user}>
             {loading ? <h2>Loading...</h2> : <ProfilesPanel user={user} profiles={profiles} />}
-        </Content>
+        </ProtectedContent>
     );
 };
 
 export const getServerSideProps = async ({ req, res }) => {
-    let user = await getUser(req, res);
-    if (!user) {
-        return {
-            props: {},
-            redirect: {
-                destination: "/login",
-                permanent: false,
-            },
-        };
+    let loggedIn = await getUser(req, res);
+
+    console.log(`Found user ${loggedIn.email}`);
+
+    if (loggedIn) {
+        // get permission of current user
+        let { data: profiles, error } = await supabase
+            .from("user_staff")
+            .select("*")
+            .gte("permission", loggedIn.permission);
+
+        if (error) {
+            console.error(error);
+        }
+
+        if (profiles) {
+            console.log("Found user and profiles.");
+            return { props: { user: loggedIn, profiles: profiles } };
+        }
+
+        console.log("Found user.");
+        return { props: { user: loggedIn } };
     }
-
-    const { data: authPermission } = await supabase.from("user_staff").select("permission").eq("id", user.id).single();
-
-    const { error, data: profiles } = await supabase
-        .from("user_staff")
-        .select("*")
-        .gte("permission", authPermission.permission);
-
-    console.log(`Profiles: ${JSON.stringify(profiles)}`);
-    console.log("error", error);
-
-    return {
-        props: {
-            user,
-            profiles,
-        },
-    };
+    console.log("Found nothing.");
+    return { props: {} };
 };
 
 export default Profiles;

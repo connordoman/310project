@@ -8,6 +8,7 @@ import Content from "/components/Content.jsx";
 import TextColumn from "/components/TextColumn.jsx";
 import { useState, useEffect, useRef } from "react";
 import MarkdownRenderer from "/components/MarkdownRenderer.jsx";
+import { getUser } from "../public/utils/supabase";
 
 /**
  * Page content and app entry point
@@ -19,6 +20,11 @@ export const App = ({ user }) => {
             <MarkdownRenderer file="/content/individualproject.md" />
         </Content>
     );
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+    let foundUser = await getUser(req, res);
+    return { props: { user: foundUser } };
 };
 
 export default App;

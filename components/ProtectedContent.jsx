@@ -11,46 +11,38 @@ import { useRouter } from "next/router";
 export const ProtectedContent = ({ user, title, children }) => {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
+    const [hidden, setHidden] = useState(true);
 
     useEffect(() => {
         if (user) {
+            console.log(`ProtectedContent: User is logged in as ${user.email}`);
             setLoading(false);
-        } else if (!user) {
-            router.push("/login");
+        } else {
+            router.push({
+                pathname: "/login",
+                query: {
+                    error: "You muse be logged in to view that page",
+                    redirect: encodeURIComponent(router.asPath),
+                },
+            });
         }
     }, [user]);
 
     if (loading) {
         return (
-            <Content title="Loading...">
+            <Content title={title} user={user}>
                 <>
-                    <InfoBar user={user} />
-                    <h1>Loading...</h1>
+                    <h2>Loading...</h2>
                 </>
             </Content>
         );
     }
 
-    return <Content title={title}>{children}</Content>;
-};
-
-export const getServerSideProps = async ({ req, res }) => {
-    let user = await getUser(req, res);
-    if (!user) {
-        return {
-            props: {},
-            redirect: {
-                destination: "/login",
-                permanent: false,
-            },
-        };
-    }
-
-    return {
-        props: {
-            user,
-        },
-    };
+    return (
+        <Content title={title} user={user}>
+            <>{children}</>
+        </Content>
+    );
 };
 
 export default ProtectedContent;

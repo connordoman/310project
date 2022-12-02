@@ -7,17 +7,22 @@ import SignUpForm from "../components/SignUpForm";
 import Content from "../components/Content";
 import TextColumn from "../components/TextColumn";
 import { useRouter } from "next/router";
+import { checkLoginStatus, getUserProfileOrRedirect, redirectIfLoggedIn } from "../public/utils/supabase";
 
-export const SignUp = ({ user }) => {
+export const SignUp = () => {
     const router = useRouter();
     console.log(JSON.stringify(router.asPath, null, 4));
     return (
-        <Content title="Sign Up" user={user}>
+        <Content title="Sign Up">
             <TextColumn dir="col">
                 <SignUpForm />
             </TextColumn>
         </Content>
     );
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+    return await redirectIfLoggedIn(req, res);
 };
 
 export default SignUp;

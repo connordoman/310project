@@ -5,23 +5,27 @@
 import { supabase } from "/public/utils/supabase.js";
 import Content from "/components/Content";
 import TextColumn from "/components/TextColumn";
+import UserTable from "../components/UserTable";
+import { getUser } from "../public/utils/supabase";
 
 export const UserDetails = ({ user, profile }) => {
     console.log({ profile });
     return (
         <Content title="User Details" user={user}>
             <TextColumn>
-                <h1>
-                    {profile.firstName} {profile.lastName}
-                </h1>
-                <h2>{profile.email}</h2>
+                <>
+                    <h2>
+                        User details for <em>{profile.username}</em>
+                    </h2>
+                    <UserTable user={profile} />
+                </>
             </TextColumn>
         </Content>
     );
 };
 
 export const getStaticPaths = async () => {
-    const { data: prof } = await supabase.from("staff").select("id");
+    const { data: prof } = await supabase.from("user_staff").select("id");
 
     const paths = prof.map(({ id }) => ({
         params: {
@@ -35,11 +39,31 @@ export const getStaticPaths = async () => {
     };
 };
 
-export const getStaticProps = async ({ params: { id } }) => {
-    const { data: prof } = await supabase.from("user_staff").select("*").eq("id", id).single();
+export const getStaticProps = async ({ req, res, params: { id } }) => {
+    const user = await getUser(req, res);
+
+    console.error("USER IN [ID] PAGE: ", user);
+
+    const { data: prof } = await supabase
+        .from("user_staff")
+        .select("*")
+        .eq("id", id)
+        .gte("permission", user.permission)
+        .single();
+
+    if (!prof) {
+        return {
+            props: {},
+            redirect: {
+                destination: "/",
+                permanent: false,
+            },
+        };
+    }
 
     return {
         props: {
+            user,
             profile: prof,
         },
     };

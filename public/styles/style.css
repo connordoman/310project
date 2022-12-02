@@ -124,7 +124,6 @@ table tr:first-child th:last-child {
 
 .table {
     border-spacing: 0;
-    max-width: 50%;
     margin: 0 auto;
 }
 
@@ -141,6 +140,14 @@ table tr:first-child th:last-child {
 
 .r-align {
     text-align: right;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
 }
 
 /*

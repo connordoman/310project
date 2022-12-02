@@ -6,6 +6,7 @@
 import Content from "/components/Content.jsx";
 import ShipmentPanel from "/components/ShipmentPanel.jsx";
 import { TEST_ITEMS } from "/public/utils/test_shipments.js";
+import { getUser } from "../public/utils/supabase";
 
 export const Shipments = ({ user }) => {
     return (
@@ -13,6 +14,11 @@ export const Shipments = ({ user }) => {
             <ShipmentPanel testShipments={TEST_ITEMS} />
         </Content>
     );
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+    let foundUser = await getUser(req, res);
+    return { props: { user: foundUser } };
 };
 
 export default Shipments;
