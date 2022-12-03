@@ -156,3 +156,32 @@ export const redirectIfLoggedIn = async (req, res, redirectTo = "/", error = "",
         props: { user: await getUser(req, res) },
     };
 };
+
+export const checkIfUserExists = async ({ id, email, username }) => {
+    if (id) {
+        const { data: user, error } = await supabase.from("user_staff").select("*").eq("id", id).single();
+        if (error) {
+            console.error("Error checking user by ID", error);
+            return false;
+        }
+        if (user) return true;
+    } else if (email) {
+        const { data: user, error } = await supabase.from("user_staff").select("*").eq("email", email).single();
+
+        if (error) {
+            console.error("Error checking user by email", error);
+            return false;
+        }
+
+        if (user) return true;
+    } else if (username) {
+        const { data: user, error } = await supabase.from("user_staff").select("*").eq("username", username).single();
+        if (error) {
+            console.error("Error checking user by username", error);
+        }
+
+        if (user) return true;
+    }
+
+    return false;
+};

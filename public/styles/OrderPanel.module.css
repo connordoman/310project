@@ -1,11 +1,15 @@
+.orderPanel {
+    width: fit-content;
+}
+
 .orderList {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: flex-start;
     margin: 0;
     padding: 0;
-    width: 100%;
+    max-width: 100%;
     overflow: hidden;
     margin-bottom: 2rem;
 }

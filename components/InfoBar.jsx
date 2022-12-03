@@ -9,16 +9,15 @@ import { FlexRow } from "./Flex";
 const style = {
     width: "100%",
     height: "1em",
-    justifyContent: "flex-end",
-    marginRight: "0.5em",
+    justifyContent: "flex-start",
     width: "100%",
-    borderTop: "0.01em solid #000",
-    borderBottom: "0.01em solid #000",
-    padding: "1em",
+    borderBottom: "0.01em solid #ccc",
+    padding: "1em 0.25em",
+    flexWrap: "nowrap",
 };
 
-export const InfoBar = ({ user }) => {
-    return <FlexRow style={{ ...style }}>{user ? `Logged in as ${user.username}` : "Not logged in"}</FlexRow>;
+export const InfoBar = ({ message }) => {
+    return <FlexRow style={style}>{message || null}</FlexRow>;
 };
 
 export default InfoBar;

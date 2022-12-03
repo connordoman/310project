@@ -19,38 +19,60 @@ export const Header = ({ user, title }) => {
         setLoggedIn(Boolean(user));
     }, [user]);
 
+    const loginStyle = {
+        padding: "0.25em 0",
+        marginRight: "0.5em",
+    };
+
     return (
         <header className="header">
-            <FlexRow>
-                <Link href="/">
-                    <a
-                        className="link-unstyled"
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
-                    >
-                        <FaRegHospital style={{ fontSize: "36pt", margin: "0 0.5em 0 0" }} />
+            <FlexRow style={{ flexWrap: "nowrap", width: "100%" }} justifyContent="space-between">
+                <FlexRow style={{ flexWrap: "nowrap" }}>
+                    <Link href="/">
+                        <span
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                cursor: "pointer",
+                            }}
+                        >
+                            <FaRegHospital style={{ fontSize: "36pt", margin: "0 0.5em 0 0" }} />
+                        </span>
+                    </Link>
+                    <FlexRow style={{ flexWrap: "wrap" }}>
                         <h1>{title}</h1>
-                    </a>
-                </Link>
-                {loggedIn ? <span className="desc">Logged in as {user.username}</span> : <></>}
-            </FlexRow>
-            <FlexRow>
-                <NavLinks links={LINK_LIST} />
-                {" || "}
-                {loggedIn ? (
-                    <>
-                        <Link href="/logout">Logout</Link>
-                    </>
-                ) : (
-                    <>
-                        <Link href="/signup">Sign Up</Link>
-                        <Link href="/login">Login</Link>
-                    </>
-                )}
+                        {loggedIn ? <span className="desc">Logged in as {user.username}</span> : <></>}
+                    </FlexRow>
+                </FlexRow>
+                <FlexRow>
+                    <NavLinks links={LINK_LIST} />
+                    <FlexRow style={{ flexBasis: "fit-content", flexWrap: "wrap", marginLeft: "0.5em" }}>
+                        {loggedIn ? (
+                            <>
+                                <Link href="/logout">
+                                    <span className="link" style={loginStyle}>
+                                        Logout
+                                    </span>
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/signup">
+                                    <span className="link" style={loginStyle}>
+                                        Sign Up
+                                    </span>
+                                </Link>
+                                <Link href="/login">
+                                    <span className="link" style={loginStyle}>
+                                        Login
+                                    </span>
+                                </Link>
+                            </>
+                        )}
+                    </FlexRow>
+                </FlexRow>
             </FlexRow>
         </header>
     );

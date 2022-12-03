@@ -149,7 +149,7 @@ export const OrderPanel = ({ orderCallback, testOrderItems }) => {
     };
 
     return (
-        <div data-cy="order-panel">
+        <div data-cy="order-panel" className={styles.orderPanel}>
             {/* <p>{JSON.stringify(cartItems)}</p> */}
             <CartBanner
                 cart={cartItems}

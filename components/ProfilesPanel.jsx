@@ -51,6 +51,14 @@ export const ProfileInputCell = ({ val, onChange, disabled }) => {
     );
 };
 
+export const ProfileLabelCell = ({ val }) => {
+    return (
+        <td>
+            <p style={{ margin: "0.2em 0.25em", textAlign: "center" }}>{val}</p>
+        </td>
+    );
+};
+
 export const ProfileTableRow = ({ profile }) => {
     const [uid, setUid] = useState(profile.id);
     const [fname, setFirstName] = useState(profile.firstName);
@@ -65,7 +73,12 @@ export const ProfileTableRow = ({ profile }) => {
             <td className={styles.idCell} title={uid}>
                 <Link href={"/" + uid}>{uid.slice(0, 5)}</Link>
             </td>
-            <ProfileInputCell val={fname} onChange={(v) => setFirstName(v)} disabled={userPermission < permission} />
+            <ProfileLabelCell val={fname} />
+            <ProfileLabelCell val={lname} />
+            <ProfileLabelCell val={email} />
+            <ProfileLabelCell val={username} />
+            <ProfileLabelCell val={permission} />
+            {/* {/* <ProfileInputCell val={fname} onChange={(v) => setFirstName(v)} disabled={userPermission < permission} />
             <ProfileInputCell val={lname} onChange={(v) => setLastName(v)} disabled={userPermission < permission} />
             <ProfileInputCell val={email} onChange={(v) => setEmail(v)} disabled={userPermission < permission} />
             <ProfileInputCell val={username} onChange={(v) => setUsername(v)} disabled={userPermission < permission} />
@@ -73,7 +86,7 @@ export const ProfileTableRow = ({ profile }) => {
                 val={permission}
                 onChange={(v) => setPermission(v)}
                 disabled={userPermission < permission}
-            />
+            /> */}
         </tr>
     );
 };
@@ -98,7 +111,7 @@ export const ProfileTable = ({ user, profiles }) => {
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Username</th>
-                    <th>Permission</th>
+                    <th>Auth</th>
                 </tr>
             </thead>
             <tbody>{profs}</tbody>

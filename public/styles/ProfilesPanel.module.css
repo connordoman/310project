@@ -7,10 +7,11 @@
 .profileTable th,
 .profileTable td {
     border: 0.5px solid lightgrey;
-    padding: 0.5em 0.5em;
+    padding: 0.5em 0.25em;
 }
 .headerRow th {
     background: #eee;
+    text-align: center;
 }
 
 .idCell {
@@ -32,4 +33,21 @@
 
 .profileTable .headerRow th:last-child {
     border-top-right-radius: 0.25em;
+}
+
+@media screen and (max-width: 600px) {
+    .profileTable {
+        max-width: 100%;
+    }
+    .profileTable td {
+        padding: 0;
+    }
+    .profileTable th {
+        padding: 0.2em;
+    }
+    .headerRow th {
+        background: #eee;
+        padding: 0.2em 0.1em;
+        text-align: center;
+    }
 }

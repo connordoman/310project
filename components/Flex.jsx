@@ -3,14 +3,14 @@
  * Copyright (c) 2022 Connor Doman
  */
 
-export const FlexRow = ({ children, style }) => {
+export const FlexRow = ({ children, style, justifyContent }) => {
     return (
         <div
             className="flex-row"
             style={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "flex-start",
+                justifyContent: justifyContent ? justifyContent : "flex-start",
                 alignItems: "center",
                 ...style,
             }}
@@ -20,14 +20,14 @@ export const FlexRow = ({ children, style }) => {
     );
 };
 
-export const FlexCol = ({ children, style }) => {
+export const FlexCol = ({ children, style, justifyContent }) => {
     return (
         <div
             className="flex-col"
             style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
+                justifyContent: justifyContent ? justifyContent : "center",
                 alignItems: "center",
                 ...style,
             }}

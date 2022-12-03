@@ -22,8 +22,9 @@ export const TextColumn = ({ text, children, tAlign = "l", ...props }) => {
         setStyle({
             textAlign: textAlign,
             minWidth: "50%",
-            maxWidth: "95%",
+            maxWidth: "97%",
             margin: "0 auto",
+            overflowX: "hidden",
             ...props.style,
         });
     }, [textAlign, props.style]);

@@ -12,6 +12,7 @@ import Header from "./Header";
 import TextColumn from "./TextColumn";
 import { useRouter } from "next/router";
 import { FlexRow } from "./Flex";
+import InfoBar from "./InfoBar";
 
 export const Content = ({ user, title, pageTitle, children, ...props }) => {
     const router = useRouter();
@@ -44,23 +45,21 @@ export const Content = ({ user, title, pageTitle, children, ...props }) => {
 
     const multipleMessages = Array.isArray(error) || Array.isArray(success) || (error && success);
 
+    const message = (
+        <p>
+            {`Message${multipleMessages ? "s" : ""} from the server: `}
+            {error ? <span className="error">{error}</span> : null}
+            {multipleMessages ? ", " : null}
+            {success ? <span className="success">{success}</span> : null}
+        </p>
+    );
+
     return (
         <div className="content">
             <Header user={user} title={pageTitle ? pageTitle : " " + title} />
             <TextColumn dir="col">
                 <>
-                    {error || success ? (
-                        <FlexRow style={{ width: "100%", justifyContent: "flex-start" }}>
-                            <>
-                                <p>
-                                    {`Message${multipleMessages ? "s" : ""} from the server: `}
-                                    {error ? <span className="error">{error}</span> : null}
-                                    {multipleMessages ? ", " : null}
-                                    {success ? <span className="success">{success}</span> : null}
-                                </p>
-                            </>
-                        </FlexRow>
-                    ) : null}
+                    {error || success ? <InfoBar message={message} /> : null}
                     {cloneElement(children, { ...props })}
                 </>
             </TextColumn>

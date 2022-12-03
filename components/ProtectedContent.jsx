@@ -21,7 +21,7 @@ export const ProtectedContent = ({ user, title, children }) => {
             router.push({
                 pathname: "/login",
                 query: {
-                    error: "You muse be logged in to view that page",
+                    error: "You must be logged in to view that page",
                     redirect: encodeURIComponent(router.asPath),
                 },
             });

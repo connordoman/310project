@@ -3,25 +3,50 @@
  * Copyright (c) 2022 Connor Doman
  */
 import { useEffect, useState } from "react";
-import { supabase } from "/public/utils/supabase.js";
+import { supabase, checkIfUserExists } from "/public/utils/supabase.js";
 import styles from "/public/styles/SignUpForm.module.css";
 import { Button } from "/components/Button";
 import TextBox from "./TextBox";
 import { useRouter } from "next/router";
 
 export const SignInOTP = ({ redirectTo, onSubmit }) => {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+
+    useEffect(() => {
+        onSubmit(submitted);
+    }, [submitted]);
 
     const signIn = async () => {
         if (!email) return;
         setLoading(true);
 
+        const exists = await checkIfUserExists({ email });
+
+        // redirect to sign up if user doesn't exist
+        if (!exists) {
+            router.push({
+                pathname: "/signup",
+                query: { error: encodeURIComponent("You need to sign up first") },
+            });
+            return;
+        }
+
         const { error } = await supabase.auth.signInWithOtp({
             email,
         });
 
-        error ? console.error({ error }) : setLoading(false) && onSubmit(true);
+        // make content visible
+        if (error) {
+            console.error("Error in sign in: " + error.message);
+        } else {
+            console.log("Sign in successful");
+            setLoading(false);
+            setSubmitted(true);
+        }
+        // setSubmitted(true);
     };
 
     const validateEmail = () => {
@@ -46,7 +71,7 @@ export const SignInOTP = ({ redirectTo, onSubmit }) => {
     );
 };
 
-export const SignInForm = ({ redirectTo }) => {
+export const SignInForm = ({ redirectTo, onSubmit }) => {
     const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -61,6 +86,17 @@ export const SignInForm = ({ redirectTo }) => {
             setQueryRedirect(redirectTo);
         }
     }, []);
+
+    useEffect(() => {
+        if (submitted && !onSubmit) {
+            router.push({
+                pathname: queryRedirect ? queryRedirect : "/",
+                query: { success: encodeURIComponent("Signed in successfully!") },
+            });
+        } else if (onSubmit) {
+            onSubmit(submitted);
+        }
+    }, [submitted]);
 
     const validateUsername = (username) => {
         setUsername(username.replace(/\s/g, "").slice(0, 20));
@@ -108,7 +144,7 @@ export const SignInForm = ({ redirectTo }) => {
                 password,
             });
 
-            if (error || !data) {
+            if (!data) {
                 let message = "No user found";
                 if (error) {
                     message = error.message;
@@ -121,20 +157,15 @@ export const SignInForm = ({ redirectTo }) => {
                 return;
             }
 
-            console.log(`User signed in: ${JSON.stringify(user, null, 4)}`);
-            setLoading(false);
-            setSubmitted(true);
+            if (error) {
+                console.error("Error in sign in: " + error.message);
+            } else {
+                console.log("Sign in successful");
+                setLoading(false);
+                setSubmitted(true);
+            }
         }
     };
-
-    useEffect(() => {
-        if (submitted) {
-            router.push({
-                pathname: queryRedirect ? queryRedirect : "/",
-                query: { success: encodeURIComponent("Signed in successfully!") },
-            });
-        }
-    }, [submitted]);
 
     if (submitted) {
         return (

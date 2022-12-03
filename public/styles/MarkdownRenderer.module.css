@@ -1,9 +1,14 @@
+.markdownArea * {
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+}
+
 .markdownArea h1 {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 0.01em solid #ccc;
     padding-bottom: 0.5em;
 }
 .markdownArea h2 {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 0.01em solid #ccc;
     padding-bottom: 0.5em;
 }
 

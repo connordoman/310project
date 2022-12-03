@@ -14,7 +14,7 @@ export const NavLink = ({ link }) => {
     return (
         <li className="navLink">
             <Link href={"/" + linkify(link)}>
-                <a className="link-unstyled">{link}</a>
+                <span className="link">{link}</span>
             </Link>
         </li>
     );

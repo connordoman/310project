@@ -18,6 +18,11 @@ export const Login = ({ user }) => {
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const handleSubmit = (s) => {
+        console.log("set submitted: " + s);
+        setSubmitted(s);
+    };
+
     return (
         <Content title="Login" user={user}>
             <TextColumn dir="column">
@@ -25,32 +30,14 @@ export const Login = ({ user }) => {
                     <p>Check your email for the link!</p>
                 ) : (
                     <>
-                        <SignInOTP />
-                        <SignInForm />
+                        <SignInOTP onSubmit={handleSubmit} />
+                        <SignInForm onSubmit={handleSubmit} />
                     </>
                 )}
             </TextColumn>
         </Content>
     );
 };
-
-// export const getServerSideProps = async ({ req, res }) => {
-//     let loggedIn = await checkLoginStatus(req, res);
-
-//     if (loggedIn) {
-//         return {
-//             props: {},
-//             redirect: {
-//                 destination: "/",
-//                 permanent: false,
-//             },
-//         };
-//     }
-
-//     return {
-//         props: {},
-//     };
-// };
 
 export const getServerSideProps = async ({ req, res }) => {
     return redirectIfLoggedIn(req, res, `/order`, "You are already logged in!");
