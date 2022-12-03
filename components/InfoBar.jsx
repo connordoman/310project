@@ -12,12 +12,16 @@ const style = {
     justifyContent: "flex-start",
     width: "100%",
     borderBottom: "0.01em solid #ccc",
-    padding: "1em 0.25em",
+    padding: "1em 0",
     flexWrap: "nowrap",
 };
 
 export const InfoBar = ({ message }) => {
-    return <FlexRow style={style}>{message || null}</FlexRow>;
+    return (
+        <FlexRow style={style}>
+            <p style={{ margin: "0 0.5em" }}>{message || null}</p>
+        </FlexRow>
+    );
 };
 
 export default InfoBar;

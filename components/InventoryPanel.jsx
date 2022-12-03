@@ -3,6 +3,8 @@
 import React from "react";
 import styles from "/public/styles/InventoryPanel.module.css";
 import { useState, useEffect, useRef } from "react";
+import TextBox from "./TextBox";
+import { Button } from "./Button";
 
 export class Warehouse {
     constructor(warehouse_id, total_space, remaining_space, inventory = [], changes = []) {
@@ -77,66 +79,25 @@ export class Warehouse {
     }
 }
 
-export function InventoryPanel({ inventoryItems }) {
-    const [selectedWarehouse, setSelectedWarehouse] = useState(inventoryItems[0]);
+export function InventoryPanel({ warehouse, inventoryItems }) {
+    const [warehouseObject, setWarehouseObject] = useState({});
+    const [selectedWarehouse, setSelectedWarehouse] = useState(warehouse);
     const [warehouseList, setWarehouseList] = useState(inventoryItems);
     const [itemList, setItemList] = useState([]);
     const [item, setItem] = useState("");
     const [quantity, setQuantity] = useState(0);
-    const [warehouse, setWarehouse] = useState(0);
-    const [warehouseSpace, setWarehouseSpace] = useState(0);
-    const [warehouseSpaceRemaining, setWarehouseSpaceRemaining] = useState(0);
-    const [warehouseInventory, setWarehouseInventory] = useState([]);
+    // const [warehouse, setWarehouse] = useState(0);
+    // const [warehouseSpace, setWarehouseSpace] = useState(0);
+    // const [warehouseSpaceRemaining, setWarehouseSpaceRemaining] = useState(0);
+    // const [warehouseInventory, setWarehouseInventory] = useState([]);
     const warehouseRef = useRef(warehouse);
-    const warehouseSpaceRef = useRef(warehouseSpace);
-    const warehouseSpaceRemainingRef = useRef(warehouseSpaceRemaining);
-    const warehouseInventoryRef = useRef(warehouseInventory);
 
     // update warehouse list
     useEffect(() => {
         setWarehouseList(inventoryItems);
     }, [inventoryItems]);
 
-    // update selected warehouse
-    useEffect(() => {
-        setSelectedWarehouse(warehouseList[warehouseRef.current]);
-    }, [warehouseList]);
-
-    // update item list
-    useEffect(() => {
-        setItemList(selectedWarehouse.inventory);
-    }, [selectedWarehouse]);
-
-    // update warehouse space
-    useEffect(() => {
-        setWarehouseSpace(selectedWarehouse.total_space);
-    }, [selectedWarehouse]);
-
-    // update warehouse space remaining
-    useEffect(() => {
-        setWarehouseSpaceRemaining(selectedWarehouse.remaining_space);
-    }, [selectedWarehouse]);
-
-    // update warehouse inventory
-    useEffect(() => {
-        setWarehouseInventory(selectedWarehouse.inventory);
-    }, [selectedWarehouse]);
-
     const addItem = (e) => {
-        e.preventDefault();
-        let item_id = item;
-        let item_name = item;
-        let item_quantity = quantity;
-        let total_quantity = quantity;
-        let warehouse_id = warehouse;
-        let warehouse_space = warehouseSpace;
-        let warehouse_space_remaining = warehouseSpaceRemaining;
-        let warehouse_inventory = warehouseInventory;
-        let warehouse_list = warehouseList;
-        let warehouse_object = warehouse_list[warehouse_id];
-        let warehouse_inventory_object = warehouse_object.inventory;
-        let status = "+" + item_quantity;
-
         // check if the warehouse is full
         if (warehouse_space_remaining < item_quantity) {
             alert("Warehouse is full");
@@ -155,53 +116,12 @@ export function InventoryPanel({ inventoryItems }) {
             return;
         }
         // check if the item already exists in the warehouse
-        let item_exists = warehouse_inventory_object.find((item) => item.item_id === item_id);
-        if (item_exists) {
-            warehouse_inventory_object.forEach((item) => {
-                if (item.item_id === item_id) {
-                    item.item_quantity = item.item_quantity - -item_quantity;
-                    total_quantity = item.item_quantity;
-                }
-            });
-            warehouse_object.remaining_space -= item_quantity;
-            warehouse_object.changes.push({
-                status,
-                item_id,
-                item_name,
-                item_quantity,
-                total_quantity,
-            });
-            setWarehouseSpaceRemaining(warehouse_object.remaining_space);
-            setWarehouseInventory(warehouse_inventory_object);
-            return;
-        }
 
         // add the item to the warehouse
-        warehouse_inventory_object.push({ item_id, item_name, item_quantity });
-        warehouse_object.inventory = warehouse_inventory_object;
-        warehouse_object.remaining_space = warehouse_space_remaining - item_quantity;
-        warehouse_list[warehouse_id] = warehouse_object;
-        setWarehouseList(warehouse_list);
-        setWarehouseSpaceRemaining(warehouse_space_remaining - item_quantity);
-        setWarehouseInventory(warehouse_inventory_object);
     };
 
     // remove item from warehouse
     const removeItem = (e) => {
-        e.preventDefault();
-        let item_id = item;
-        let item_name = item;
-        let item_quantity = quantity;
-        let total_quantity = quantity;
-        let warehouse_id = warehouse;
-        let warehouse_space = warehouseSpace;
-        let warehouse_space_remaining = warehouseSpaceRemaining;
-        let warehouse_inventory = warehouseInventory;
-        let warehouse_list = warehouseList;
-        let warehouse_object = warehouse_list[warehouse_id];
-        let warehouse_inventory_object = warehouse_object.inventory;
-        let status = "-" + item_quantity;
-
         // check if the warehouse is valid
         if (warehouse_id < 0 || warehouse_id >= warehouse_list.length) {
             alert("Invalid warehouse");
@@ -222,49 +142,10 @@ export function InventoryPanel({ inventoryItems }) {
         }
 
         // remove the item from the warehouse
-        warehouse_inventory_object.forEach((item) => {
-            if (item.item_id === item_id) {
-                if (item.item_quantity - 0 < item_quantity) {
-                    alert("Invalid quantity");
-                    return;
-                }
-                item.item_quantity -= item_quantity;
-                total_quantity = item.item_quantity;
-                if (item.item_quantity === 0) {
-                    warehouse_inventory_object.splice(warehouse_inventory_object.indexOf(item));
-                }
-            }
-        });
-        warehouse_object.changes.push({
-            status,
-            item_id,
-            item_name,
-            item_quantity: item_quantity,
-            total_quantity,
-        });
-        setWarehouseSpaceRemaining(warehouse_space_remaining - -item_quantity);
-        setWarehouseInventory(warehouse_inventory_object);
     };
 
     // change active warehouse using warehouse_Id with dropdown menu
-    const changeWarehouse = (e) => {
-        e.preventDefault();
-        let warehouse_id = e.target.value;
-        let warehouse_list = warehouseList;
-        let warehouse_object = warehouse_list[warehouse_id];
-        let warehouse_space = warehouse_object.total_space;
-        let warehouse_space_remaining = warehouse_object.remaining_space;
-        let warehouse_inventory = warehouse_object.inventory;
-        warehouseRef.current = warehouse_id;
-        warehouseSpaceRef.current = warehouse_space;
-        warehouseSpaceRemainingRef.current = warehouse_space_remaining;
-        warehouseInventoryRef.current = warehouse_inventory;
-        setWarehouse(warehouse_id);
-        setItemList(warehouse_inventory);
-        setWarehouseSpace(warehouse_space);
-        setWarehouseSpaceRemaining(warehouse_space_remaining);
-        setWarehouseInventory(warehouse_inventory);
-    };
+    const changeWarehouse = (e) => {};
 
     const warehouseMenu = (
         <select
@@ -309,28 +190,27 @@ export function InventoryPanel({ inventoryItems }) {
                 <form>
                     <label>
                         Item ID:
-                        <input
-                            type="text"
+                        <TextBox
                             value={item}
-                            onChange={(e) => {
-                                setItem(e.target.value);
+                            onChange={(v) => {
+                                setItem(v);
                             }}
                         />
                     </label>
                     <br />
                     <label>
                         Quantity:
-                        <input
-                            type="number"
+                        <TextBox
+                            type="text"
                             value={quantity}
-                            onChange={(e) => {
-                                setQuantity(e.target.value);
+                            onChange={(v) => {
+                                setQuantity(v);
                             }}
                         />
                     </label>
                     <br />
-                    <input type="button" value="Add" onClick={addItem} />
-                    <input type="button" value="Remove" onClick={removeItem} />
+                    <Button onClick={addItem}>Add</Button>
+                    <Button onClick={removeItem}>Remove</Button>
                 </form>
             </div>
             <div className={styles.inventory_panel__history}>

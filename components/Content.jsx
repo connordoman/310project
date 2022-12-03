@@ -46,12 +46,12 @@ export const Content = ({ user, title, pageTitle, children, ...props }) => {
     const multipleMessages = Array.isArray(error) || Array.isArray(success) || (error && success);
 
     const message = (
-        <p>
+        <>
             {`Message${multipleMessages ? "s" : ""} from the server: `}
             {error ? <span className="error">{error}</span> : null}
             {multipleMessages ? ", " : null}
             {success ? <span className="success">{success}</span> : null}
-        </p>
+        </>
     );
 
     return (

@@ -19,18 +19,14 @@ export const Header = ({ user, title }) => {
         setLoggedIn(Boolean(user));
     }, [user]);
 
-    const loginStyle = {
-        padding: "0.25em 0",
-        marginRight: "0.5em",
-    };
-
     return (
         <header className="header">
             <FlexRow style={{ flexWrap: "nowrap", width: "100%" }} justifyContent="space-between">
                 <FlexRow style={{ flexWrap: "nowrap" }}>
                     <Link href="/">
-                        <span
+                        <a
                             style={{
+                                color: "white",
                                 display: "flex",
                                 flexDirection: "row",
                                 alignItems: "center",
@@ -39,7 +35,7 @@ export const Header = ({ user, title }) => {
                             }}
                         >
                             <FaRegHospital style={{ fontSize: "36pt", margin: "0 0.5em 0 0" }} />
-                        </span>
+                        </a>
                     </Link>
                     <FlexRow style={{ flexWrap: "wrap" }}>
                         <h1>{title}</h1>
@@ -48,26 +44,28 @@ export const Header = ({ user, title }) => {
                 </FlexRow>
                 <FlexRow>
                     <NavLinks links={LINK_LIST} />
-                    <FlexRow style={{ flexBasis: "fit-content", flexWrap: "wrap", marginLeft: "0.5em" }}>
+                    <FlexRow
+                        style={{
+                            flexBasis: "fit-content",
+                            flexWrap: "wrap",
+                            marginLeft: "0.5em",
+                        }}
+                    >
                         {loggedIn ? (
                             <>
                                 <Link href="/logout">
-                                    <span className="link" style={loginStyle}>
-                                        Logout
-                                    </span>
+                                    <a className="link">Logout</a>
                                 </Link>
                             </>
                         ) : (
                             <>
                                 <Link href="/signup">
-                                    <span className="link" style={loginStyle}>
+                                    <a className="link" style={{ marginRight: "0.5em" }}>
                                         Sign Up
-                                    </span>
+                                    </a>
                                 </Link>
                                 <Link href="/login">
-                                    <span className="link" style={loginStyle}>
-                                        Login
-                                    </span>
+                                    <a className="link">Login</a>
                                 </Link>
                             </>
                         )}
