@@ -9,6 +9,8 @@ import UserTable from "../components/UserTable";
 import { getUser } from "../public/utils/supabase";
 
 export const UserDetails = ({ user, profile }) => {
+    const columns = ["id", "username", "email", "permission", "created_at", "updated_at"];
+
     console.log({ profile });
     return (
         <Content title="User Details" user={user}>
@@ -17,7 +19,7 @@ export const UserDetails = ({ user, profile }) => {
                     <h2>
                         User details for <em>{profile.username}</em>
                     </h2>
-                    <UserTable user={profile} />
+                    <UserTable user={profile} columns={columns} />
                 </>
             </TextColumn>
         </Content>
@@ -48,7 +50,7 @@ export const getStaticProps = async ({ req, res, params: { id } }) => {
         .from("user_staff")
         .select("*")
         .eq("id", id)
-        .gte("permission", user.permission)
+        // .gte("permission", user.permission)
         .single();
 
     if (!prof) {

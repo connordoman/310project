@@ -4,8 +4,11 @@
  */
 import { useState } from "react";
 import Link from "next/link";
+import moment from "moment-timezone";
 
 export const UserTable = ({ user }) => {
+    const timezone = moment.tz.guess();
+
     const tableRows = Object.keys(user).map((key) => {
         let value = user[key];
         if (key.toUpperCase().indexOf("ID") > -1) {
@@ -50,6 +53,10 @@ export const UserTable = ({ user }) => {
             <tr>
                 <th className="r-align">Username</th>
                 <td>{user.username || "---"}</td>
+            </tr>
+            <tr>
+                <th className="r-align">Created At</th>
+                <td>{`${moment(user.created_at).tz(timezone).format("YYYY-MM-DD HH:mm:ss")} ${timezone}` || "---"}</td>
             </tr>
         </>
     );

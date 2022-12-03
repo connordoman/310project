@@ -52,15 +52,7 @@ export const Content = ({ user, title, pageTitle, children, ...props }) => {
                     {error || success ? (
                         <FlexRow style={{ width: "100%", justifyContent: "flex-start" }}>
                             <>
-                                <p
-                                    style={{
-                                        marginRight: "0.5em",
-                                        width: "100%",
-                                        borderTop: "0.01em solid #000",
-                                        borderBottom: "0.01em solid #000",
-                                        padding: "1em",
-                                    }}
-                                >
+                                <p>
                                     {`Message${multipleMessages ? "s" : ""} from the server: `}
                                     {error ? <span className="error">{error}</span> : null}
                                     {multipleMessages ? ", " : null}
