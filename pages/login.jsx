@@ -27,11 +27,11 @@ export const Login = ({ user }) => {
         <Content title="Login" user={user}>
             <TextColumn dir="column">
                 {submitted ? (
-                    <p>Check your email for the link!</p>
+                    <p>Account confirmed!</p>
                 ) : (
                     <>
                         <SignInOTP onSubmit={handleSubmit} />
-                        <SignInForm onSubmit={handleSubmit} />
+                        <SignInForm />
                     </>
                 )}
             </TextColumn>

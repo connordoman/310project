@@ -88,13 +88,14 @@ export const SignInForm = ({ redirectTo, onSubmit }) => {
     }, []);
 
     useEffect(() => {
-        if (submitted && !onSubmit) {
+        if (onSubmit) {
+            onSubmit(submitted);
+        }
+        if (submitted) {
             router.push({
                 pathname: queryRedirect ? queryRedirect : "/",
                 query: { success: encodeURIComponent("Signed in successfully!") },
             });
-        } else if (onSubmit) {
-            onSubmit(submitted);
         }
     }, [submitted]);
 

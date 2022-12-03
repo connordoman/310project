@@ -91,6 +91,9 @@ export function InventoryPanel({ warehouse, inventoryItems }) {
     // const [warehouseSpaceRemaining, setWarehouseSpaceRemaining] = useState(0);
     // const [warehouseInventory, setWarehouseInventory] = useState([]);
     const warehouseRef = useRef(warehouse);
+    const warehouseSpaceRef = useRef(warehouseSpace);
+    const warehouseSpaceRemainingRef = useRef(warehouseSpaceRemaining);
+    const warehouseInventoryRef = useRef(warehouseInventory);
 
     // update warehouse list
     useEffect(() => {

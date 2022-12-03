@@ -86,8 +86,9 @@ export const OrderListItem = ({ item, onChange, update = false }) => {
     return (
         <li data-cy="order-list-item" className={styles.orderItem}>
             <div className={styles.itemImage}>{RANDOM_ITEM_IMAGES[id]}</div>
-            <span>
+            <span style={{ margin: "0 1em" }}>
                 {it.toString()}
+                <br />
                 <br />
                 {it.priceString}
             </span>
