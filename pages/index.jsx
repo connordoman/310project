@@ -17,7 +17,7 @@ import { getUser } from "../public/utils/supabase";
 export const App = ({ user }) => {
     return (
         <Content title="Home" user={user}>
-            <MarkdownRenderer file="/content/individualproject.md" />
+            <MarkdownRenderer file="/content/homepage.md" />
         </Content>
     );
 };

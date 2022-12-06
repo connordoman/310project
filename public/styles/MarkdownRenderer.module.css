@@ -51,6 +51,13 @@
     line-height: 1.5em;
 }
 
+.markdownArea img {
+    min-width: 50%;
+    max-width: 80%;
+    margin: 0 10%;
+    text-align: center;
+}
+
 .markdownArea {
     margin: 2.5%;
     width: 100%;
